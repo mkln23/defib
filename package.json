@@ -10,7 +10,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "sls offline start",
-        "build": "sls package",
+        "build": "serverless package",
         "deploy": "sls deploy",
         "format": "prettier --write \"**/*.+(js|ts|json|yml)\"",
         "clean": "rm -rf .serverless .webpack dist"

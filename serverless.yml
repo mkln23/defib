@@ -5,7 +5,7 @@ frameworkVersion: '3'
 custom:
     stage: ${opt:stage, 'local'}
     region: ${opt:region, 'us-east-1'}
-    resourcePrefix: ${self:service}-${self:custom.stage}er
+    resourcePrefix: ${self:service}-${self:custom.stage}
     esbuild:
         bundle: true
         minify: false
