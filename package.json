@@ -24,7 +24,7 @@
     "devDependencies": {
         "@types/express": "^4.17.21",
         "prettier": "^3.6.2",
-        "serverless": "^3.38.0",
+        "serverless": "^3.36.0",
         "serverless-dotenv-plugin": "^6.0.0",
         "serverless-esbuild": "^1.54.6",
         "serverless-offline": "^13.9.0",
