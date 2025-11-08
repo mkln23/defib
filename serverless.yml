@@ -33,7 +33,7 @@ provider:
     logs:
         httpApi: true
     httpApi: # Add this block
-        payload: 1.0 # Key fix: Use v1.0 for Express compatibility
+        payload: "1.0" # Key fix: Use v1.0 for Express compatibility
 
 plugins:
     - serverless-dotenv-plugin
