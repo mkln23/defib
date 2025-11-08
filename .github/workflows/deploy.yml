@@ -48,4 +48,4 @@ jobs:
                   aws-region: ${{ secrets.AWS_REGION }}
 
             - name: 🚀 Deploy to AWS with Serverless
-              run: serverless deploy --stage $STAGE --region $AWS_REGION
+              run: npm run deploy:dev
