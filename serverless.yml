@@ -1,0 +1,90 @@
+service: defib-api
+
+frameworkVersion: '3'
+
+custom:
+    stage: ${opt:stage, 'local'}
+    region: ${opt:region, 'us-east-1'}
+    resourcePrefix: ${self:service}-${self:custom.stage}er
+    esbuild:
+        bundle: true
+        minify: false
+        sourcemap: true
+        target: node20
+        platform: node
+        tsconfig: tsconfig.json
+
+    serverless-offline:
+        httpPort: ${env:DEV_SERVER_PORT, 3000}
+        noPrependStageInUrl: true
+        reloadHandler: true
+
+provider:
+    name: aws
+    stage: ${self:custom.stage}
+    region: ${self:custom.region}
+    runtime: nodejs20.x
+    # environment: ${self:custom.env}
+
+    memorySize: 512
+    timeout: 10
+    logRetentionInDays: 7
+
+    logs:
+        httpApi: true
+    httpApi: # Add this block
+        payload: 1.0 # Key fix: Use v1.0 for Express compatibility
+
+plugins:
+    - serverless-dotenv-plugin
+    - serverless-esbuild
+    - serverless-offline
+
+functions:
+    app:
+        handler: src/handlers/app.handler
+        events:
+            - httpApi:
+                  path: /app/{proxy+}
+                  method: '*'
+# service: defib-api
+
+# custom:
+#     stage: ${opt:stage, 'local'}
+#     region: ${opt:region, 'us-east-1'}
+#     resourcePrefix: ${self:service}-${self:custom.stage}er
+#     esbuild:
+#         bundle: true
+#         minify: false
+#         sourcemap: true
+#         target: node20
+#         platform: node
+#         tsconfig: tsconfig.json
+#     serverless-offline:
+#         httpPort: ${env:DEV_SERVER_PORT, 3000}
+#         noPrependStageInUrl: true
+#         reloadHandler: true
+
+# provider:
+#     name: aws
+#     stage: ${self:custom.stage}
+#     region: ${self:custom.region}
+#     runtime: nodejs20.x
+#     memorySize: 512
+#     timeout: 10
+#     logRetentionInDays: 7
+#     logs:
+#         httpApi: true
+
+# plugins:
+#     - serverless-dotenv-plugin
+#     - serverless-esbuild
+#     - serverless-offline
+
+# functions:
+#     app:
+#         handler: src/handlers/app.handler
+#         events:
+#             - httpApi:
+#                   path: /app/{proxy+}
+#                   method: '*'
