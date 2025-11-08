@@ -36,7 +36,7 @@ provider:
         payload: 1.0 # Key fix: Use v1.0 for Express compatibility
 
 plugins:
-    - serverless-dotenv-plugin
+    # - serverless-dotenv-plugin
     - serverless-esbuild
     - serverless-offline
 
