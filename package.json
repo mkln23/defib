@@ -18,7 +18,7 @@
         "prisma:layer": "mkdir -p layers/prisma-engine && cp node_modules/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node layers/prisma-engine/prisma_engine.node",
         "prisma:format": "prisma-case-format --file prisma/schema.prisma -p --map-table-case=snake,plural --map-field-case snake --map-enum-case snake",
         "clean": "rm -rf .serverless .webpack dist",
-        "deploy:dev": "sls deploy --stage ${{ env.STAGE }} --region ${{ env.AWS_REGION }}"
+        "deploy:dev": "sls deploy --stage dev --region us-east-1"
     },
     "author": "",
     "license": "ISC",
