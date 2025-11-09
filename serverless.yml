@@ -32,7 +32,8 @@ provider:
     stage: ${self:custom.stage}
     region: ${self:custom.region}
     runtime: nodejs20.x
-    environment: ${self:custom.env}
+    environment:
+        PRISMA_QUERY_ENGINE_LIBRARY: ${self:custom.env.PRISMA_QUERY_ENGINE_LIBRARY}
 
     memorySize: 512
     timeout: 10
@@ -58,7 +59,7 @@ functions:
     app:
         handler: src/handlers/app.handler
         layers:
-            - !Ref PrismaEngineLambdaLayer
+            - !Ref PrismaEngine
         events:
             - httpApi:
                   path: /app/{proxy+}
