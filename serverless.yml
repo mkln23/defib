@@ -59,7 +59,7 @@ functions:
     app:
         handler: src/handlers/app.handler
         layers:
-            - !Ref PrismaEngine
+            - { Ref: PrismaEngineLambdaLayer }
         events:
             - httpApi:
                   path: /app/{proxy+}
