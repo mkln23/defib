@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+model Device {
+  id        Int      @id @default(autoincrement())
+  name      String
+  status    String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("devices")
+}

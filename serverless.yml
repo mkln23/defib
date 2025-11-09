@@ -6,13 +6,21 @@ custom:
     stage: ${opt:stage, 'local'}
     region: ${opt:region, 'us-east-1'}
     resourcePrefix: ${self:service}-${self:custom.stage}
+
     esbuild:
-        bundle: true
-        minify: false
-        sourcemap: true
-        target: node20
         platform: node
-        tsconfig: tsconfig.json
+        target: node20
+        sourcemap: true
+        plugins: esbuild.config.js
+
+    env:
+        PRISMA_QUERY_ENGINE_LIBRARY: ${self:custom.prismaEnginePath.${self:custom.stage}}
+
+    prismaEnginePath:
+        local: 'node_modules/.prisma/client/libquery_engine-darwin-arm64.dylib.node'
+        qa: '/opt/prisma_engine.node'
+        dev: '/opt/prisma_engine.node'
+        staging: '/opt/prisma_engine.node'
 
     serverless-offline:
         httpPort: ${env:DEV_SERVER_PORT, 3000}
@@ -24,7 +32,7 @@ provider:
     stage: ${self:custom.stage}
     region: ${self:custom.region}
     runtime: nodejs20.x
-    # environment: ${self:custom.env}
+    environment: ${self:custom.env}
 
     memorySize: 512
     timeout: 10
@@ -33,7 +41,13 @@ provider:
     logs:
         httpApi: true
     httpApi: # Add this block
-        payload: "1.0" # Key fix: Use v1.0 for Express compatibility
+        payload: '1.0' # Key fix: Use v1.0 for Express compatibility
+
+layers:
+    prismaEngine:
+        path: layers/prisma-engine
+        name: ${self:custom.resourcePrefix}-prisma-engine
+        compatibleRuntimes: [nodejs20.x]
 
 plugins:
     - serverless-dotenv-plugin
@@ -43,48 +57,9 @@ plugins:
 functions:
     app:
         handler: src/handlers/app.handler
+        layers:
+            - !Ref PrismaEngineLambdaLayer
         events:
             - httpApi:
                   path: /app/{proxy+}
                   method: '*'
-# service: defib-api
-
-# custom:
-#     stage: ${opt:stage, 'local'}
-#     region: ${opt:region, 'us-east-1'}
-#     resourcePrefix: ${self:service}-${self:custom.stage}er
-#     esbuild:
-#         bundle: true
-#         minify: false
-#         sourcemap: true
-#         target: node20
-#         platform: node
-#         tsconfig: tsconfig.json
-#     serverless-offline:
-#         httpPort: ${env:DEV_SERVER_PORT, 3000}
-#         noPrependStageInUrl: true
-#         reloadHandler: true
-
-# provider:
-#     name: aws
-#     stage: ${self:custom.stage}
-#     region: ${self:custom.region}
-#     runtime: nodejs20.x
-#     memorySize: 512
-#     timeout: 10
-#     logRetentionInDays: 7
-#     logs:
-#         httpApi: true
-
-# plugins:
-#     - serverless-dotenv-plugin
-#     - serverless-esbuild
-#     - serverless-offline
-
-# functions:
-#     app:
-#         handler: src/handlers/app.handler
-#         events:
-#             - httpApi:
-#                   path: /app/{proxy+}
-#                   method: '*'
