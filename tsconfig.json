@@ -9,10 +9,10 @@
         "outDir": "dist",
         "resolveJsonModule": true,
         "moduleResolution": "node",
-        // "paths": {
-        // 	"@/*": ["./src/*"]
-        // },
-        // "baseUrl": ".",
+        "paths": {
+        	"@/*": ["./src/*"]
+        },
+        "baseUrl": ".",
         // File Layout
         // "rootDir": "./src",
         // "outDir": "./dist",
