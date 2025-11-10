@@ -65,3 +65,12 @@ functions:
             - httpApi:
                   path: /app/{proxy+}
                   method: '*'
+
+    iot:
+        handler: src/handlers/iot.handler
+        layers:
+            - { Ref: PrismaEngineLambdaLayer }
+        events:
+            - httpApi:
+                  path: /iot/data
+                  method: '*'
