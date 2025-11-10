@@ -2,25 +2,26 @@ import prisma from '@/clients/prisma';
 import logger from '@/shared/utils/logger';
 import { APIGatewayProxyHandler } from 'aws-lambda';
 
-export const handler: APIGatewayProxyHandler = async event => {
+export const handler: APIGatewayProxyHandler = async (event: any) => {
     try {
         logger.info('Incoming IoT event:');
-        logger.info('event');
         logger.info(event);
-        logger.info('event.body');
-        logger.info(event.body);
-        logger.info('JSON.parse(event.body ?? {} as any)');
-        logger.info(JSON.parse(event.body ?? {} as any));
-        
-        const payload = event.body ? JSON.parse(event.body) : event; // supports direct IoT payloads
-        logger.info('payload');
+        logger.info('Event type:');
+        logger.info(typeof event.body);
+
+        // handle both IoT direct invoke & API Gateway style
+        const payload = typeof event.body === 'string' ? JSON.parse(event.body) : (event.body ?? event);
+
+        logger.info('Parsed payload:');
         logger.info(payload);
 
         const { deviceId, heartBeat } = payload;
-        logger.info('deviceId')
-        logger.info(deviceId)
-        logger.info('heartBeat')
-        logger.info(heartBeat)
+        logger.info('deviceId', deviceId);
+        logger.info('heartBeat', heartBeat);
+
+        if (!deviceId) {
+            throw new Error('Missing deviceId in payload');
+        }
 
         // Insert into your DB using Prisma
         const record = await prisma.readings.create({
