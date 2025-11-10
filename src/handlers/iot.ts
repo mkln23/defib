@@ -5,11 +5,22 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 export const handler: APIGatewayProxyHandler = async event => {
     try {
         logger.info('Incoming IoT event:');
+        logger.info('event');
         logger.info(event);
-
+        logger.info('event.body');
+        logger.info(event.body);
+        logger.info('JSON.parse(event.body ?? {} as any)');
+        logger.info(JSON.parse(event.body ?? {} as any));
+        
         const payload = event.body ? JSON.parse(event.body) : event; // supports direct IoT payloads
+        logger.info('payload');
+        logger.info(payload);
 
         const { deviceId, heartBeat } = payload;
+        logger.info('deviceId')
+        logger.info(deviceId)
+        logger.info('heartBeat')
+        logger.info(heartBeat)
 
         // Insert into your DB using Prisma
         const record = await prisma.readings.create({
