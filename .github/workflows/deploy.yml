@@ -18,6 +18,7 @@ jobs:
             DEV_SERVER_PORT: ${{ secrets.DEV_SERVER_PORT }}
             AWS_REGION: ${{ secrets.AWS_REGION }}
             DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            WEBSOCKET_API_ENDPOINT: ${{ secrets.WEBSOCKET_API_ENDPOINT }}
 
             # Determine stage based on branch
             STAGE: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
