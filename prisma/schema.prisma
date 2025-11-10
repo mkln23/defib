@@ -25,3 +25,11 @@ model Readings {
 
   @@map("readings")
 }
+
+model WebSocketConnection {
+  id           String   @id @default(cuid())
+  connectionId String   @unique
+  createdAt    DateTime @default(now())
+
+  @@map("web_socket_connections")
+}

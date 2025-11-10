@@ -1,23 +1,14 @@
 import prisma from '@/clients/prisma';
 import logger from '@/shared/utils/logger';
 import { APIGatewayProxyHandler } from 'aws-lambda';
+import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi';
 
-export const handler: APIGatewayProxyHandler = async (event: any) => {
+export const handler: APIGatewayProxyHandler = async event => {
     try {
-        logger.info('Incoming IoT event:');
-        logger.info(event);
-        logger.info('Event type:');
-        logger.info(typeof event.body);
-
         // handle both IoT direct invoke & API Gateway style
         const payload = typeof event.body === 'string' ? JSON.parse(event.body) : (event.body ?? event);
 
-        logger.info('Parsed payload:');
-        logger.info(payload);
-
         const { deviceId, heartBeat } = payload;
-        logger.info('deviceId');
-        logger.info(deviceId);
         logger.info('heartBeat');
         logger.info(heartBeat);
 
@@ -33,8 +24,35 @@ export const handler: APIGatewayProxyHandler = async (event: any) => {
             },
         });
 
-        logger.info('Record inserted:');
-        logger.info(record);
+        const connections = await prisma.webSocketConnection.findMany();
+        const endpoint = process.env.WEBSOCKET_API_ENDPOINT ?? '';
+
+        const apiGwClient = new ApiGatewayManagementApiClient({
+            endpoint,
+        });
+
+        const message = JSON.stringify({
+            type: 'iot-update',
+            data: record,
+        });
+
+        for (const conn of connections) {
+            try {
+                await apiGwClient.send(
+                    new PostToConnectionCommand({
+                        ConnectionId: conn.connectionId,
+                        Data: Buffer.from(message),
+                    }),
+                );
+            } catch (err) {
+                logger.error(`Failed to send to ${conn.connectionId}`);
+                logger.error(err);
+                // Clean up stale connections
+                if ((err as any).statusCode === 410) {
+                    await prisma.webSocketConnection.deleteMany({ where: { connectionId: conn.connectionId } });
+                }
+            }
+        }
 
         return {
             statusCode: 200,

@@ -74,3 +74,21 @@ functions:
             - httpApi:
                   path: /iot/data
                   method: '*'
+
+    ws-connect:
+        handler: src/handlers/websockets/connect.handler
+        events:
+            - websocket:
+                  events: $connect
+
+    ws-disconnect:
+        handler: src/handlers/websockets/disconnect.handler
+        events:
+            - websocket:
+                  events: $connect
+
+    ws-connect:
+        handler: src/handlers/websockets/default.handler
+        events:
+            - websocket:
+                  events: $default
