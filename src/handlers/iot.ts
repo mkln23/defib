@@ -27,6 +27,9 @@ export const handler: APIGatewayProxyHandler = async event => {
         const connections = await prisma.webSocketConnection.findMany();
         const endpoint = process.env.WEBSOCKET_API_ENDPOINT ?? '';
 
+        logger.info('socket endpoint')
+        logger.info(endpoint)
+
         const apiGwClient = new ApiGatewayManagementApiClient({
             endpoint,
         });
