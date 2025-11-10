@@ -9,8 +9,8 @@ export const handler: APIGatewayProxyHandler = async event => {
     const connection = await prisma.webSocketConnection.deleteMany({
         where: { connectionId },
     });
-    
-    logger.info("Websocket connection deleted")
-    logger.info(connection)
+
+    logger.info('Websocket connection deleted');
+    logger.info(connection);
     return { statusCode: 200, body: 'Socket Disconnected' };
 };

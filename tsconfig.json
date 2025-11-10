@@ -10,7 +10,7 @@
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "paths": {
-        	"@/*": ["./src/*"]
+            "@/*": ["./src/*"]
         },
         "baseUrl": ".",
         // File Layout

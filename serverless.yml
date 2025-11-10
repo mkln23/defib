@@ -77,18 +77,21 @@ functions:
 
     ws-connect:
         handler: src/handlers/websockets/connect.handler
+        layers:
+            - { Ref: PrismaEngineLambdaLayer }
         events:
-            - websocket:
-                  events: $connect
+            - websocket: $connect
 
     ws-disconnect:
         handler: src/handlers/websockets/disconnect.handler
+        layers:
+            - { Ref: PrismaEngineLambdaLayer }
         events:
-            - websocket:
-                  events: $connect
+            - websocket: $disconnect
 
     ws-default:
         handler: src/handlers/websockets/default.handler
+        layers:
+            - { Ref: PrismaEngineLambdaLayer }
         events:
-            - websocket:
-                  events: $default
+            - websocket: $default
