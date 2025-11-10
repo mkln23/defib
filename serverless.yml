@@ -87,7 +87,7 @@ functions:
             - websocket:
                   events: $connect
 
-    ws-connect:
+    ws-default:
         handler: src/handlers/websockets/default.handler
         events:
             - websocket:
