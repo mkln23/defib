@@ -34,6 +34,7 @@ provider:
     runtime: nodejs20.x
     environment:
         DATABASE_URL: ${env:DATABASE_URL}
+        WEBSOCKET_API_ENDPOINT: ${env:WEBSOCKET_API_ENDPOINT}
         PRISMA_QUERY_ENGINE_LIBRARY: ${self:custom.env.PRISMA_QUERY_ENGINE_LIBRARY}
 
     memorySize: 512
