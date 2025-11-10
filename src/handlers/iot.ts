@@ -16,8 +16,10 @@ export const handler: APIGatewayProxyHandler = async (event: any) => {
         logger.info(payload);
 
         const { deviceId, heartBeat } = payload;
-        logger.info('deviceId', deviceId);
-        logger.info('heartBeat', heartBeat);
+        logger.info('deviceId');
+        logger.info(deviceId);
+        logger.info('heartBeat');
+        logger.info(heartBeat);
 
         if (!deviceId) {
             throw new Error('Missing deviceId in payload');
