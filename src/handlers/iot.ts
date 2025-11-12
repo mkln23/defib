@@ -7,6 +7,8 @@ export const handler: APIGatewayProxyHandler = async event => {
     try {
         // handle both IoT direct invoke & API Gateway style
         const payload = typeof event.body === 'string' ? JSON.parse(event.body) : (event.body ?? event);
+        logger.info('payload')
+        logger.info(payload)
 
         const {
             defibId,
