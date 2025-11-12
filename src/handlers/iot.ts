@@ -6,28 +6,29 @@ import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk
 export const handler: APIGatewayProxyHandler = async event => {
     try {
         // handle both IoT direct invoke & API Gateway style
-        logger.info('event')
-        logger.info(event)
-        logger.info('event.body')
-        logger.info(event.body)
+        logger.info('event');
+        logger.info(event);
+        logger.info('event.body');
+        logger.info(event.body);
         const payload = typeof event.body === 'string' ? JSON.parse(event.body) : (event.body ?? event);
-        logger.info('payload')
-        logger.info(payload)
+        logger.info('payload');
+        logger.info(payload);
 
-        const {
-            defibId,
-            heartRateBpm,
-            sdnnMs,
-            rmssdMs,
-            lfPower,
-            hfPower,
-            lfHfRatio,
-            qrsWidthMs,
-            signalEntropy,
-            signalEnergy,
-        } = payload;
+        const { defibId, data } = payload;
+        const { heartRateBpm, sdnnMs, rmssdMs, lfPower, hfPower, lfHfRatio, qrsWidthMs, signalEntropy, signalEnergy } =
+            data;
+        logger.info('defibId');
+        logger.info(defibId);
         logger.info('heartRateBpm');
         logger.info(heartRateBpm);
+        logger.info('sdnnMs');
+        logger.info(sdnnMs);
+        logger.info('qrsWidthMs');
+        logger.info(qrsWidthMs);
+        logger.info('signalEnergy');
+        logger.info(signalEnergy);
+        logger.info('lfPower');
+        logger.info(lfPower);
 
         if (!defibId) {
             throw new Error('Missing deviceId in payload');
