@@ -17,19 +17,39 @@ model Device {
   @@map("devices")
 }
 
+model Defibrillator {
+  id        Int        @id @default(autoincrement())
+  name      String
+  status    String
+  createdAt DateTime   @default(now()) @map("created_at")
+  readings  Readings[]
+
+  @@map("defibrillators")
+}
+
 model Readings {
-  id        Int      @id @default(autoincrement())
-  deviceId  String   @map("device_id")
-  heartBeat Float    @map("heart_beat")
-  createdAt DateTime @default(now()) @map("created_at")
+  id              Int            @id @default(autoincrement())
+  defibId         String         @map("defib_id")
+  heartRateBpm    Float          @map("heart_rate_bpm")
+  sdnnMs          Float          @map("sdnn_ms")
+  rmssdMs         Float          @map("rmssd_ms")
+  lfPower         Float          @map("lf_power")
+  hfPower         Float          @map("hf_power")
+  lfHfRatio       Float          @map("lf_hf_ratio")
+  qrsWidthMs      Float          @map("qrs_width_ms")
+  signalEntropy   Float          @map("signal_entropy")
+  signalEnergy    Float          @map("signal_energy")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  Defibrillator   Defibrillator? @relation(fields: [defibrillatorId], references: [id])
+  defibrillatorId Int?
 
   @@map("readings")
 }
 
 model WebSocketConnection {
   id           String   @id @default(cuid())
-  connectionId String   @unique
-  createdAt    DateTime @default(now())
+  connectionId String   @unique @map("connection_id")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("web_socket_connections")
 }

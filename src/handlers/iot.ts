@@ -8,27 +8,46 @@ export const handler: APIGatewayProxyHandler = async event => {
         // handle both IoT direct invoke & API Gateway style
         const payload = typeof event.body === 'string' ? JSON.parse(event.body) : (event.body ?? event);
 
-        const { deviceId, heartBeat } = payload;
-        logger.info('heartBeat');
-        logger.info(heartBeat);
+        const {
+            defibId,
+            heartRateBpm,
+            sdnnMs,
+            rmssdMs,
+            lfPower,
+            hfPower,
+            lfHfRatio,
+            qrsWidthMs,
+            signalEntropy,
+            signalEnergy,
+        } = payload;
+        logger.info('heartRateBpm');
+        logger.info(heartRateBpm);
 
-        if (!deviceId) {
+        if (!defibId) {
             throw new Error('Missing deviceId in payload');
         }
 
         // Insert into your DB using Prisma
         const record = await prisma.readings.create({
             data: {
-                deviceId,
-                heartBeat,
+                defibId,
+                heartRateBpm,
+                sdnnMs,
+                rmssdMs,
+                lfPower,
+                hfPower,
+                lfHfRatio,
+                qrsWidthMs,
+                signalEntropy,
+                signalEnergy,
             },
         });
 
         const connections = await prisma.webSocketConnection.findMany();
         const endpoint = process.env.WEBSOCKET_API_ENDPOINT ?? '';
 
-        logger.info('socket endpoint')
-        logger.info(endpoint)
+        logger.info('socket endpoint');
+        logger.info(endpoint);
 
         const apiGwClient = new ApiGatewayManagementApiClient({
             endpoint,
