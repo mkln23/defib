@@ -35,13 +35,13 @@ model Readings {
   rmssdMs         Float          @map("rmssd_ms")
   lfPower         Float          @map("lf_power")
   hfPower         Float          @map("hf_power")
-  lfHfRatio       Float          @map("lf_hf_ratio")
+  lfHfRatio       Float?         @map("lf_hf_ratio")
   qrsWidthMs      Float          @map("qrs_width_ms")
   signalEntropy   Float          @map("signal_entropy")
   signalEnergy    Float          @map("signal_energy")
   createdAt       DateTime       @default(now()) @map("created_at")
-  Defibrillator   Defibrillator? @relation(fields: [defibrillatorId], references: [id])
-  defibrillatorId Int?
+  defibrillator   Defibrillator? @relation(fields: [defibrillatorId], references: [id])
+  defibrillatorId Int?           @map("defibrillator_id")
 
   @@map("readings")
 }
