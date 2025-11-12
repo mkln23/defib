@@ -6,6 +6,10 @@ import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk
 export const handler: APIGatewayProxyHandler = async event => {
     try {
         // handle both IoT direct invoke & API Gateway style
+        logger.info('event')
+        logger.info(event)
+        logger.info('event.body')
+        logger.info(event.body)
         const payload = typeof event.body === 'string' ? JSON.parse(event.body) : (event.body ?? event);
         logger.info('payload')
         logger.info(payload)
